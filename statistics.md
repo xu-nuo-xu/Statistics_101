@@ -95,7 +95,7 @@
 <br>
 
 ## PL16-Logistic Regression
->首先我介绍一下关于几率(odds)的概念，几率和概率是紧密联系的，下面这张图介绍了几率和概率(probability)、以及几率比率(odds raito)的概念。我们看到均匀的硬币掷出 head 的概率为 0.5，不均匀的(loaded)硬币掷出 head 的概率为 0.7。几率就是事件发生的概率/时间不发生的概率。几率比率就是两个事件的几率比值：<br>
+>本节只对逻辑回归进行一个简单了解性的介绍。首先我介绍一下关于几率(odds)的概念，几率和概率是紧密联系的，下面这张图介绍了几率和概率(probability)、以及几率比率(odds raito)的概念。我们看到均匀的硬币掷出 head 的概率为 0.5，不均匀的(loaded)硬币掷出 head 的概率为 0.7。几率就是事件发生的概率/时间不发生的概率。几率比率就是两个事件的几率比值：<br>
 <div align=center><img src="pictures/19.png"  width="80%" height="80%"><br>
 <div align=left>
 <br>
@@ -105,5 +105,20 @@
 <div align=left>
 <br>
 <div align=center><img src="pictures/21.png"  width="60%" height="60%"><br>
+<div align=left>
+<br>
+
+>需要注意的是逻辑回归中，同间隔的两个自变量点的几率比值始终为一个定值，我们看下面这个例子，讲的是根据信用评分来决定是否进行贷款的问题。相应的系数计算过程课程中没有讲，在此就略去。我们分别代入 $x=720 和 x=721$ 两个点的几率，进一步我们可以得到二者的几率比值为 1.0146，如下图所示：<br>
+<div align=center><img src="pictures/22.png"  width="80%" height="60%"><br>
+<div align=left>
+<br>
+
+>也就是说，无论起始点在哪，只要 x 增加一个单位，原来的几率与增加后的几率比值都是 1.0146，并且 Minitab 等软件会给我们一个置信区间(confidence interval ( CI ))，如果这个置信区间中包含 1 就说明 x 的增加可能会对判定结果的几率/概率没有影响(这里 1.0147 和 1.0146 只是舍入的区别)：<br>
+<div align=center><img src="pictures/23.png"  width="80%" height="60%"><br>
+<div align=left>
+<br>
+
+>最后一点是关于 x (FICO) 增加的幅度，得到的几率比率图。这幅图有意思的点在于，它完全符合一个指数函数的形式，并且指数的系数 0.0146 恰好等于我们得到的 p-hat 的系数 β1 ：<br>
+<div align=center><img src="pictures/24.png"  width="80%" height="60%"><br>
 <div align=left>
 <br>
