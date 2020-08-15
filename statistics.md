@@ -193,7 +193,43 @@
 <br>
 
 ### Mann-Whitney-Wilcoxon Rank Sum Test
->我们先介绍一下Mann-Whitney-Wilcoxon Rank Sum Test的背景(作用)。在参数检验中，我们如果需要检验两个正态总体的均值是否相等，我们会用到 t-test，但在非参数检验中，Mann-Whitney-Wilcoxon Rank Sum Test 给我们提供了一个当两个总体分布未知的情况下，二者的中位数是否相等的方法。我们采用的是从两个总体中分别抽取一定样本，来对这些样本进行一定的“排名(rank)”，我们在检验时，并不关注样本的准确数值而是只关注样本的排名情况，来判定二者的中位数是否相同：<br>
+>我们先介绍一下Mann-Whitney-Wilcoxon Rank Sum Test的背景(作用)。在参数检验中，我们如果需要检验两个正态总体的均值是否相等，我们会用到 t-test，但在非参数检验中，Mann-Whitney-Wilcoxon Rank Sum Test 给我们提供了一个当两个总体分布未知的情况下，二者的中位数是否相等的方法。我们采用的是从两个总体中分别抽取一定样本，来对这些样本进行一定的“排名(rank)”，我们在检验时，并不关注样本的准确数值而是只关注样本的排名情况，来判定二者的中位数是否相同/判定两组样本是否来自同一总体：<br>
 <div align=center><img src="pictures/36.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>这里先举一个简单的例子，十位同学分别给两家星巴克(C店和N店)打分，五位给 C 店打分，另外五位给 N 店打分。我们要判定的是，这两家星巴克的环境是否是几乎一致的，体现在分数上就是十份评分基本一致，抽象一些就是十份评分是来自同一总体。我们先介绍一个极端情况，即下图所示，RANK 是十份评分的排名情况，很明显 N 店都排在前面，C 店都排在后面。那么什么时候二者可以判定为来自同一个总体呢? 因为是非参数方法，通过评分排名来看，我们希望两家店面各自的评分排名之和都处于 27.5 附近<br>
+<div align=center><img src="pictures/37.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>下面这张图就是最理想的情况，两家店面的打分之和都在 27.5 附近，一个 25 一个 30。这样的话我们就不能拒绝原假设 $H_0:两家店面的环境一致$：<br>
+<div align=center><img src="pictures/38.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>上面只是一个定型的了解，下面我们通过数据来讲解Mann-Whitney-Wilcoxon Rank Sum Test的检验过程。下面是检验的步骤。需要说明的是第四点关于平均排名，请参照：[RANK.AVG和RANK.EQ函数](https://jingyan.baidu.com/article/f79b7cb33232e59144023e0b.html)。<br>
+<div align=center><img src="pictures/39.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>下面通过一个例子和对应在 Excel 中的操作来解释。题目背景：泰森教授被告知第一秋学期 25 名学生对他的评分过低，要求泰森教授在第二春学期尽量改善学生对他的看法。第二春学期结束后，我们收集了 25 名学生对他的评分。通过非参数方法，根据已给 50 份评分信息，来看到底学生对他的看法有没有改善？<br>
+我们的原假设 $H_0:Semester_1-Semester_2>=0$，即第一学期的评分大于或等于第二学期评分，如果否定了原假设，则说明看法有改善。我们可以看到这是一个单侧假设。在做检验前，我们需要得到两个值如下图。$μ_W$ 就是我们在上一个定性例子中期待的两组样本各自排名之和的理想均值 27.5 的计算方法。$σ_W$ 就是评分排名的标准差。我们往往要求两组样本的样本数都大于等于 10。：<br>
+<div align=center><img src="pictures/40.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>而我们想要检验的值是 z 如下图，其中 W 代表第一秋学期的评分排名总和(下下下图的 514)。我们最后用 z 与标准正态分布(这里为什么是标准正态分布不太明白：应当是因为 W 是第一组样本评分的加和，而根据中心极限定理样本数足够多，加和形式就是服从正态分布，并且期望和标准差分别是 $μ_W$ 和 $σ_W$)对应的显著性水平 0.05 对应的左区间点进行大小对比(至于为什么是左区间：因为我们的原假设是 $H_0:Semester_1-Semester_2>=0$，也就是区间右边都是 OK 的)：<br>
+<div align=center><img src="pictures/41.png"  width="30%" height="30%"><br>
+<div align=left>
+<br>
+
+>下面是整个检验过程，下面是对所有的 50 份评分进行一个平均排名：<br>
+<div align=center><img src="pictures/42.png"  width="70%" height="30%"><br>
+<div align=left>
+<br>
+
+>之后我们通过所有的上面公式得到我们想要的 z，并且查表拒绝了原假设。<br>
+<div align=center><img src="pictures/43.png"  width="30%" height="30%"><br>
 <div align=left>
 <br>
