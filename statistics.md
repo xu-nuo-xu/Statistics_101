@@ -1,3 +1,14 @@
+<!-- TOC -->
+
+- [统计学课程Statistics 101笔记](#统计学课程statistics-101笔记)
+    - [PL15 - Multiple Linear Regression](#pl15---multiple-linear-regression)
+    - [PL16 - Logistic Regression](#pl16---logistic-regression)
+    - [PL17 - ANCOVA (ANalysis of COVAriance)](#pl17---ancova-analysis-of-covariance)
+    - [PL19 - Nonparametric Methods](#pl19---nonparametric-methods)
+        - [Sign Test For Median Examples](#sign-test-for-median-examples)
+        - [Mann-Whitney-Wilcoxon Rank Sum Test](#mann-whitney-wilcoxon-rank-sum-test)
+
+<!-- /TOC -->
 # 统计学课程Statistics 101笔记
 ## PL15 - Multiple Linear Regression
 >相比于之前我们在课本中提到过的一元线性回归，这里拓展到了多元线性回归。如下图所示，我们讨论三种观点：
@@ -94,7 +105,7 @@
 <div align=left>
 <br>
 
-## PL16-Logistic Regression
+## PL16 - Logistic Regression
 >本节只对逻辑回归进行一个简单了解性的介绍。首先我介绍一下关于几率(odds)的概念，几率和概率是紧密联系的，下面这张图介绍了几率和概率(probability)、以及几率比率(odds raito)的概念。我们看到均匀的硬币掷出 head 的概率为 0.5，不均匀的(loaded)硬币掷出 head 的概率为 0.7。几率就是事件发生的概率/时间不发生的概率。几率比率就是两个事件的几率比值：<br>
 <div align=center><img src="pictures/19.png"  width="80%" height="80%"><br>
 <div align=left>
@@ -120,5 +131,69 @@
 
 >最后一点是关于 x (FICO) 增加的幅度，得到的几率比率图。这幅图有意思的点在于，它完全符合一个指数函数的形式，并且指数的系数 0.0146 恰好等于我们得到的 p-hat 的系数 β1 ：<br>
 <div align=center><img src="pictures/24.png"  width="80%" height="60%"><br>
+<div align=left>
+<br>
+
+## PL17 - ANCOVA (ANalysis of COVAriance)
+>这里只简要说明一下 ANCOVA 的作用。作者举了一个例子是关于学生年级为分类型自变量和学习能力评分为连续型因变量之间的关系。如果只有这一个自变量和因变量就可以使用 One-way ANOVA。但是，我们知道影响学习能力评分的因素可能还有学生自身的 GPA，也就是说 GPA 也可以被讨论进来。于是就有两个自变量，分类型的学生年级和连续型的 GPA：<br>
+<div align=center><img src="pictures/25.png"  width="70%" height="70%"><br>
+<div align=left>
+<br>
+
+>ANCOVA 其实就是根据协变量 GPA 与学习能力评分之间存在的线性关系，来调整学生年级变量对学习能力评分的影响。体现在误差上就是，一部分 SSE 分给了 Cov 协变量，毕竟协变量也会对最终结果产生影响。如果协变量与因变量之间存在强线性关系，那么会有很大一部分误差分给 Cov，于是原变量的显著性水平就会大幅提高。<br>
+<div align=center><img src="pictures/26.png"  width="80%" height="70%"><br>
+<div align=left>
+<br>
+
+>ANCOVA 最终对原变量的测试其实是在保证其他所有协变量一致的情况下进行的。更准确的来说就是通过对原变量各个学生年级的学习能力评分的平均值来测试的。下面这张图就是 ANOVA 和 ANCOVA 二者对均值的改变情况。并且最终将 GPA 控制在一个相同的水平 2.9843 下：<br>
+<div align=center><img src="pictures/27.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+## PL19 - Nonparametric Methods
+>在一个统计推断问题中，如果总体分布的具体形式已知(最常见的是假定为正态分布)，则我们只需对其中含有的若干个未知参数作出估计或进行某种形式的假设检验，这类推断方法称为参数方法。但在许多实际问题中，我们对总体分布的形式往往所知甚少(如只能作出诸如连续型分布、关于均值对称等微弱的假定)，甚至一无所知。这时就需要使用不必(或很少)依赖于总体分布形式的统计推断方法，此类推断方法通常称为非参数方法(non-parametric method)。<br>
+
+### Sign Test For Median Examples
+
+>我们从最简单的符号检验中位数开始讲起。比如我们对于一个容量为 12 的样本，来估计总体的中位数，样本如下图所示。我们假设总体的中位数为 60200 ，即大约在第三个样本和第四个样本之间的一个值。并检验假设 $H_0:Median=60200$ $H_α：Median≠60200$。我们统计样本中小于 60200 和大于 60200 的样本个数以及占总体的概率 p。是否符合假设 $H_0:P\{x<60200\}=0.5$ $H_α:P\{x<60200\}≠0.5$。若不符合，有多大的概率可以否定原假设。注意假设 $H_0:p=0.5$ $H_α:p≠0.5$使得样本中大于/小于 60200 的个数 N 符合二项分布 $B(n,p)=B(12,0.5)$。<br>
+<div align=center><img src="pictures/28.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>按照上图所示的样本，我们看到样本中小于 60200 的有 3 个，根据原假设 $H_0:p=0.5$，我们得到下面的二项分布表，即 12 个样本中若出现 0-12 个小于 60200 的值的概率。根据之前的假设检验知识我们知道， 0/1/2/3 个小于 60200 的值出现的概率之和，即 0.073，我们可以作为单边的小概率事件的概率。因为原假设涉及的检验是双边检验。因此 $p-value = 0.073 * 2 = 0.146$，若取显著性水平为 0.10 ，则 $p-value > α$，也就是说对于显著性水平 0.10 对应的 N 应当是小于 3 或者大于 9 的，于是我们样本中出现的 3 个就满足相应的要求。于是我们不能拒绝原假设$H_0:P\{x<60200\}=0.5$，也就是$H_0:Median=60200$。 <br>
+<div align=center><img src="pictures/29.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>但这貌似是不合理的，因为按照常理来说我们应当选取第六个到第七个样本之间的一个值作为中位数。其他的都应该尽量否定假设。问题就出在样本量上，样本太小导致估计不准确。我们接下来再假设$H_0:Median=97600$ $H_α：Median≠97600$。我们样本中有 2 个是大于 97600 ，10 个小于97600。于是我们统计二项分布 $B(n,p)=B(12,0.5)$ 中小于 2 和 大于 10 二者的概率和 p-value = 0.036，对于显著性水平 $0.10 > p-value$，于是我们否定了原假设。于是对于二项分布 $B(n,p)=B(12,0.5)$ 显著性水平 0.10，恰好满足的 N 的数量应当是介于 2 个到 3 个之间的一个值，或者说 9 个到 10 个之间的一个值：<br>
+<div align=center><img src="pictures/30.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>如果我们选择更大一点的样本量，根据以往的知识，二项分布 $B(n,p)$ 可近似看为连续的正态分布 $N(np,np(1-p))$。下面这个例子就讲的是更大的样本我们用正态分布近似二项分布进行非参数检验。右下角是我们的假设，我们看到这是一个单边假设。样本中有 51 个工资小于 75K 的员工，34 个工资大于 75K 的员工。<br>
+<div align=center><img src="pictures/31.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>于是我们将 $B(n,p)=B(85,0.5)$ 近似于 $N(np,np(1-p))=N(42.5,21.25)$，我们按照下面的步骤进行检验。需要强调的是，离散的情况下我们本来要检验 $P(x<=34)$ 与对应显著性水平大小关系，但是转换为连续的就需要加 0.5 变成 $P(x<=34.5)$ (continuity correction factor)。因为连续的二项分布我们就构造统计量：$\frac{X-μ}{σ}$，查表 $N(0,1)$ 即可得到对应的大小关系。
+<br>
+<div align=center><img src="pictures/33.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>查表后结果如下，若显著性水平取 $α=0.05$，$P=0.0413 < α$，于是否定原假设 $Median >= 75000$。:<br>
+<div align=center><img src="pictures/34.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>最后总结一下关键点如下图。其实关键就是把中位数的检验转化为样本中大于/小于中位数个数的检验。这个检验就叫做符号检验(sign-test)。我们不用知道原来数据的分布情况，仅凭大于/小于中位数的样本数即可决定检验结果：
+<br>
+<div align=center><img src="pictures/35.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+### Mann-Whitney-Wilcoxon Rank Sum Test
+>我们先介绍一下Mann-Whitney-Wilcoxon Rank Sum Test的背景(作用)。在参数检验中，我们如果需要检验两个正态总体的均值是否相等，我们会用到 t-test，但在非参数检验中，Mann-Whitney-Wilcoxon Rank Sum Test 给我们提供了一个当两个总体分布未知的情况下，二者的中位数是否相等的方法。我们采用的是从两个总体中分别抽取一定样本，来对这些样本进行一定的“排名(rank)”，我们在检验时，并不关注样本的准确数值而是只关注样本的排名情况，来判定二者的中位数是否相同：<br>
+<div align=center><img src="pictures/36.png"  width="80%" height="80%"><br>
 <div align=left>
 <br>
