@@ -7,6 +7,11 @@
     - [PL19 - Nonparametric Methods](#pl19---nonparametric-methods)
         - [Sign Test For Median Examples](#sign-test-for-median-examples)
         - [Mann-Whitney-Wilcoxon Rank Sum Test](#mann-whitney-wilcoxon-rank-sum-test)
+        - [Wilcoxon Signed Rank Test](#wilcoxon-signed-rank-test)
+        - [Kruskal-Wallis Test](#kruskal-wallis-test)
+        - [Friedman Test](#friedman-test)
+        - [Spearman Rank Correlation](#spearman-rank-correlation)
+        - [Mood's Median Test](#moods-median-test)
 
 <!-- /TOC -->
 # 统计学课程Statistics 101笔记
@@ -231,5 +236,132 @@
 
 >之后我们通过所有的上面公式得到我们想要的 z，并且查表拒绝了原假设。<br>
 <div align=center><img src="pictures/43.png"  width="30%" height="30%"><br>
+<div align=left>
+<br>
+
+### Wilcoxon Signed Rank Test
+>Wilcoxon Signed Rank Test 实际上是基于配对数据总体均值 t 检验的非参数方法。下图是相关背景介绍。没有对正态总体的要求，只需要总体呈对称分布即可。我们不关注配对的具体数值，而是关注差异的 RANK 排名：<br>
+<div align=center><img src="pictures/44.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>下面介绍一个例子：一位新的 youtuber，为了考察视频的缩略图对视频点击量是否有显著影响做了相关调查。如下图所示，调查了 25 个视频分别在有自拍的缩略图和无自拍的缩略图下的点击量。现在我们根据这些数据进行假设检验：<br>
+<div align=center><img src="pictures/45.png"  width="30%" height="80%"><br>
+<div align=left>
+<br>
+
+>我们的原假设如下：$H_0：μ_{selfle} 和 μ_{no\_selfle}$ 没有显著差异。在参数检验中，我们会构建样本差异的值，并根据正态总体可加性的前提，将问题转化为对差异值进行 t 检验(具体过程见《概率论与数理统计》P157)。但是在非参数检验中我们只关注差异的排名，并根据下述步骤进行检验：<br>
+<div align=center><img src="pictures/46.png"  width="80%" height="80%"><br>
+<div align=left>
+<div align=center><img src="pictures/47.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>我们将在 Excel 中进行上面的步骤并解释其中的核心思想。下面的表格中记录了前八个步骤的内容。这里的 RANK Diff 也用的和前一主题一样的平均排名。最后两列是按照差异正负对排名进行分类。在最下面记录了正负差异两列排名之和分别为 88.5 和 211.5。这里就是我们需要关注的重点。我们上面说到原假设是 $H_0：μ_{selfle} 和 μ_{no\_selfle}$ 没有显著差异。那没有显著差异体现在排名上就是这两列差异排名都要尽可能靠近一个均值，至于均值是多少我们下面介绍，这里就类似之前 Mann-Whitney-Wilcoxon Rank Sum Test 中的 $μ_W$。即如果自拍与否和点击量没有关系的话，正负差异的排名之和应当是交错的，而不是明显偏向一边。而这里取和，就可以根据中心极限定理使得和式的结果值符合正态分布。$T+$ 就是经过连续矫正因子 0.5 校正后的正差异排名之和。$n=24$ 而不是 25 的原因是如果有的样本二者差异为 0 则去除该样本(步骤4)：<br>
+<div align=center><img src="pictures/48.png"  width="70%" height="80%"><br>
+<div align=left>
+<br>
+
+>下面给出相关抽样分布均值和方差的定义，来进行步骤 9 和步骤 10：<br>
+<div align=center><img src="pictures/49.png"  width="70%" height="80%"><br>
+<div align=left>
+<br>
+
+>最后的结果如下，我们看到均值 $Mean=μ_{T^+}=150$，也就是说如果两组数据没有差异则差异排名 Σ 起来应当都接近 150，但是本例中一个 88.5 一个 211.5 在显著性水平 0.05 下依然不能拒绝原假设(原假设为双边假设)：<br>
+<div align=center><img src="pictures/50.png"  width="20%" height="80%"><br>
+<div align=left>
+<br>
+
+### Kruskal-Wallis Test
+>Kruskal-Wallis Test 其实是 one-way ANOVA 的非参数形式。相关背景介绍如下。Kruskal-Wallis Test不要求每个整体呈正态分布，不关注每个样本具体值，而只关注各个样本的 Rank 排名情况。并且在 ANOVA 中我们只能根据原假设判定几个总体是否有相同的均值，但如果出现差异并不能准确定位是哪几个之间有差异，Kruskal-Wallis Test 同样也只能做到这样：<br>
+<div align=center><img src="pictures/51.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>下面通过一个星巴克评分的例子来说明这个检验过程，我们之前在Mann-Whitney-Wilcoxon Rank Sum Test提到过关于两组评分的情况，现在我们有三组评分，每组 15 个评分样本，需要判定这三家的环境是否可认为是基本一致的。下面是这个过程以及相关公式。在 Kruskal-Wallis Test 中我们构建的是一个统计量 H，H 是符合卡方分布的，自由度为 $3 - 1 = 2$(三家店面)，但是作者并没有告诉我们这个统计量为什么符合这样的卡方分布。可以看到 H 中我们关注的主要还是样本量 n 的相关信息和样本排名之和 $R_i$ 的相关信息，这里的计算过程我就不再赘述。part1-3是作者为了演示计算过程，将 H 分为三部分计算，最后显著性水平为 0.05 下，我们拒绝了原假设，说明这三家店是有区别的 ：<br>
+<div align=center><img src="pictures/52.png"  width="90%" height="90%"><br>
+<div align=left>
+<br>
+
+>最后需要强调的是，Kruskal-Wallis Test 是一个关于卡方分布的右侧单侧检验，可以理解为统计量 H 是对三者差异大小进行的描述，因此在分布左侧说明差异小，可以接受，但是过于偏向右侧说明差异很大，我们就要拒绝原假设。
+<br>
+<div align=center><img src="pictures/53.png"  width="60%" height="60%"><br>
+<div align=left>
+<br>
+
+### Friedman Test
+>Two-way ANOVA 非参数形式。因为 Two-way ANOVA 还没有掌握，暂时空下。
+
+### Spearman Rank Correlation
+>前面的几个非参数方法都是对两组/几组样本对应的总体的均值差异性进行的分析，本篇是针对自变量与因变量的相关性进行的介绍。之前我们接触的一个重要的相关性的指标就是 Pearson-Correlation-Coefficient，但这个是针对具体的数值的，Spearman Rank Correlation 是针对自变量与因变量差异排名的。下面这张图描述了二者之间的关系：<br>
+<div align=center><img src="pictures/54.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>我们通过一个例子来具体看看，下面是 30 个公司两天的道琼斯股票指数变化情况，我们想了解第二天的涨跌情况和第一天是否存在相关关系。第五列是第一天的股票指数涨/跌幅排名情况，第六列是第一天的股票指数涨/跌幅排名情况，第七列是第五列减第六列的结果，即两日涨跌变化幅度，最后一列是第七列平方的结果。我们需要研究的就是最后一列的数值：<br>
+<div align=center><img src="pictures/55.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>下面介绍 Spearman Rank Correlation Coefficient $r_s$，可以看到 $d_i^2$ 就是上图最后一列的结果：<br>
+<div align=center><img src="pictures/56.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>而这个系数 $r_s$ 其实是符合正态分布的，对应的期望和方差如下<br>
+<div align=center><img src="pictures/57.png"  width="60%" height="60%"><br>
+<div align=left>
+<br>
+
+>正因为期望为 0，因此我们的原假设如下，即相关系数为 0，二者涨跌排名差异没有线性关系，也就是第一天股票涨跌和第二天无关：<br>
+<div align=center><img src="pictures/58.png"  width="60%" height="60%"><br>
+<div align=left>
+<br>
+
+>于是我们的按照正态分布的方式进行检验，构建统计量 z：<br>
+<div align=center><img src="pictures/59.png"  width="30%" height="30%"><br>
+<div align=left>
+<br>
+
+>最终的检验结果如下，这是一个双边检验，在置信度水平 0.05 下未能拒绝原假设，也就是说第一天和第二天的涨跌情况没有直接联系。需要指出的是，如果我们要拒绝原假设，就要提高 $|z|$ 的值，根据上图 z 的表达式，结合此题背景，那就需要让 $|r_s|$ 更大，$r_s$ 更小，小于 -0.2626，或者减小分母上的标准差，而 $r_s$ 对应的正态分布标准差只和样本量 n 有关，也就是增大样本量可以使得 $|z|$ 更大。这两个要素可以综合着变化来影响 z 的水平，定性来看如果样本量不变的情况下 $|r_s|$ 越大，我们就越有自信说二者有相关性；如果 $|r_s|$ 一定，样本越多，我们就越有自信说二者有相关性。下图最下面的三个指标分别是 Pearson 相关系数，Pearson 相关系数两个变量分别是两天的涨跌排名，Spearman 相关系数，我们看到最后两个是相同的(数值上的细微不同是舍入误差)，也就是对应第一张图的第三点：<br>
+<div align=center><img src="pictures/60.png"  width="20%" height="30%"><br>
+<div align=left>
+<br>
+
+### Mood's Median Test
+>其实 Mood's Median Test 和 Kruskal-Wallis Test 很像，都是检验几组样本是否来自同一总体/有无差异。只不过检验的内容不同，Kruskal-Wallis Test 检验的是由每组样本对应指标的排名之和信息构造一个统计量 H，符合卡方分布，检验这个统计量，若 H 过大则说明几组样本中存在差异。而 Mood's Median Test 针对的是每组样本中大于/小于所有样本构成的总体对应的中位数的个数，我们有一个每组大于/小于总体中位数个数的期望与观测值，对二者进行卡方检验，若值过大则说明差异较大。Mood's Median Test 属于 Sign test，而 Kruskal-Wallis Test 属于 Rank test。
+
+>下面这张图给我们一个直观的检验感受，分为三种情况，最上面的是理想情况即四组样本大于/小于总体中位数的样本个数都在期望上。第二种的第二、四组样本中的大于总体中位数的样本个数有些偏多，第三组小于总体中位数的样本个数有些偏多。第三种也类似：<br>
+<div align=center><img src="pictures/61.png"  width="80%" height="30%"><br>
+<div align=left>
+<br>
+
+>下面这个小例子作为一个引子，还是星巴克两家店面(C店、N店)打分问题。我们这次统计两家店面评分中大于等于/小于总体中位数的样本个数，绘制为下面的表。我们看到所有 30 份打分的中位数为 16，小于等于16的样本用颜色标出：<br>
+<div align=center><img src="pictures/62.png"  width="80%" height="30%"><br>
+<div align=left>
+<br>
+
+>而我们将这两份综合起来，只看 total 行和 total 列，可以得出两家店面的大于/小于中位数样本个数的期望，计算方法如下，也很好理解，下面第二个表的第一项给我们指出了计算方法，比如总体有 18 个小于中位数的样本，C 店的样本占 15/30，因此 C 店小于中位数的样本期望就是 $(15/30)*18=(15*18)/30=9$：<br>
+<div align=center><img src="pictures/63.png"  width="80%" height="30%"><br>
+<div align=left>
+<br>
+
+>我们的原假设如下，体现在数据上就是上图的 Observed 和 Expected 的差异性，我们用卡方检验可以检验这种差异性足不足以使得 $H_0$ 被拒绝([关于卡方检验基本原理和步骤](https://baike.baidu.com/item/%E5%8D%A1%E6%96%B9%E6%A3%80%E9%AA%8C/2591853?fr=aladdin)，在《概率论与数理统计》P173 也有讲到)：<br>
+<div align=center><img src="pictures/64.png"  width="80%" height="30%"><br>
+<div align=left>
+<br>
+
+>卡方检验相关自由度是:$(r-1)(c-1)$，r，c分别为行数和列数，在上面小例子中就是$(2-1)(2-1)=1$，α 是对应的显著性水平，当 p-value <= α ，或计算的卡方统计量和显著性水平为 α 的统计量值大小关系如下时，拒绝原假设：<br>
+<div align=center><img src="pictures/65.png"  width="40%" height="30%"><br>
+<div align=left>
+<br>
+
+>下面是一个更大的例子，我们来看其中的计算过程。这个例子有四家星巴克店面，所有的 60 份评分中位数为 17，数出每家店面大于等于/小于 17 的样本数为 Observed 第一张蓝色表，根据 total 行，total 列得到第二张 Expected 橙色表。而自由度为 $(r-1)(c-1)=(2-1)(4-1)=3$：<br>
+<div align=center><img src="pictures/66.png"  width="80%" height="80%"><br>
+<div align=left>
+<br>
+
+>我们根据下图卡方统计量计算公式计算 $Chi-observed$，其中 $k=8=2行*4列=8组数据$，$f_i$ 为观测值即第一个表中的值，$np_i$ 为期望值，即第二个表中的值。我们将一二表中的 8 对数据配对计算得到 $Chi-observed=23.69299221$，卡方检验为单侧检验，而显著性水平 0.05 下自由度为 3 的统计量卡方的值为 7.814727903，于是我们拒绝原假设：即四家店面有一定的差异性。<br>
+<div align=center><img src="pictures/67.png"  width="30%" height="80%"><br>
 <div align=left>
 <br>
